@@ -42,3 +42,17 @@ class BorrowReturnTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.book.refresh_from_db()
         self.assertFalse(self.book.is_borrowed)
+
+def test_overdue_books(self):
+    borrow = Borrow.objects.create(user=self.user, book=self.book, borrowed_date="2020-01-01")
+    self.client.login(username="testuser", password="password")
+    response = self.client.get('/overdue-books/')
+    self.assertEqual(response.status_code, 200)
+    self.assertTrue(response.data[0]["is_overdue"])
+
+def test_admin_report(self):
+    self.client.login(username="admin", password="adminpassword")
+    response = self.client.get('/admin-report/')
+    self.assertEqual(response.status_code, 200)
+    self.assertIn("total_books", response.data)
+    self.assertIn("total_borrowed", response.data)

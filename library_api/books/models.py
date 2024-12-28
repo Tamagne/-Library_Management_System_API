@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from datetime import date
 
 class Author(models.Model):
     name = models.CharField(max_length=255)
@@ -15,7 +15,7 @@ class Book(models.Model):
     # Existing fields
     title = models.CharField(max_length=255)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    publication_date = models.DateField()
+    publication_date = models.DateField(default='2020-01-01')  # Set a default value
     genre = models.CharField(max_length=255)
     
     is_borrowed = models.BooleanField(default=False)  # New field
@@ -78,6 +78,20 @@ class Activity(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
 
-from django.db import models
-from django.contrib.auth.models import User
+class Reservation(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reservations")
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="reservations")
+    reservation_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} reserved {self.book.title}"
+
+class Borrow(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    borrowed_date = models.DateField()
+    is_returned = models.BooleanField(default=False)
+
+    def is_overdue(self):
+        return date.today() > self.borrowed_date + timedelta(days=14)  # Example 2-week loan period
 
