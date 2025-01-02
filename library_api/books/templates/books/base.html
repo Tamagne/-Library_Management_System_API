@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="{% static 'book/css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <img src="{% static 'book/images/logo.png' %}" alt="Library Logo" class="logo">
+        <h1>Library Management System</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'books:list' %}">Books</a></li>
+                <li><a href="{% url 'users:list' %}">Users</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+
+        {% block content %}
+        <button id="toggleTheme">Toggle Dark Mode</button>
+
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Library Management System</p>
+    </footer>
+
+    <script src="{% static 'book/js/script.js' %}"></script>
+</body>
+</html>
