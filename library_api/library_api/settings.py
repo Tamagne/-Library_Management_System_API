@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',  # Make sure DRF is installed
+     'rest_framework.authtoken',
     'books',  # Add your app here
     'channels',
 ]
@@ -143,12 +144,16 @@ EMAIL_HOST_PASSWORD = 'your_password'    # Replace with your app-specific passwo
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+
+    'EXCEPTION_HANDLER': 'library_api.utils.custom_exception_handler',
+    'DEFAULT_PAGINATION_CLASS': 'books.pagination.CustomPagination',
+    'PAGE_SIZE': 10,  # Optional global page size
 }
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-}

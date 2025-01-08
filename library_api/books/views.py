@@ -200,3 +200,23 @@ class ReturnBookView(APIView):
                 return Response({"message": "Book returned successfully!"}, status=200)
         except Book.DoesNotExist:
             return Response({"error": "Book not found!"}, status=404)
+from rest_framework.permissions import IsAuthenticated
+
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
+
+class BookViewSet(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['author', 'published_date']
+    search_fields = ['title', 'author__first_name']
+    ordering_fields = ['published_date', 'title']
+
+from django.shortcuts import get_object_or_404
+
+class BookViewSet(viewsets.ViewSet):
+    def retrieve(self, request, pk=None):
+        book = get_object_or_404(Book, pk=pk)
+        serializer = BookSerializer(book)
+        return Response(serializer.data)
