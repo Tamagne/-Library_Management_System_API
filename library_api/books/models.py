@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import date
 
+
+
 class Author(models.Model):
     name = models.CharField(max_length=255)
     biography = models.TextField(null=True, blank=True)  # Add this if missing
@@ -86,12 +88,24 @@ class Reservation(models.Model):
     def __str__(self):
         return f"{self.user.username} reserved {self.book.title}"
 
-class Borrow(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    borrowed_date = models.DateField()
-    is_returned = models.BooleanField(default=False)
+from django.contrib.auth.models import AbstractUser
+from django.db import models
 
-    def is_overdue(self):
-        return date.today() > self.borrowed_date + timedelta(days=14)  # Example 2-week loan period
 
+class User(AbstractUser):
+    # Add custom fields here if needed
+
+    class Meta:
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
+
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='custom_user_set',  # Avoid conflicts
+        blank=True
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='custom_user_permissions_set',  # Avoid conflicts
+        blank=True
+    )

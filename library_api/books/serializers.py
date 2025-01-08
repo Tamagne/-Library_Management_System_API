@@ -1,3 +1,5 @@
+from django.contrib.auth.models import User
+
 from rest_framework import serializers
 from .models import Author, Book, Member, Borrow, BorrowTransaction
 from rest_framework import serializers
@@ -24,11 +26,12 @@ class BookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ['id', 'title', 'author', 'author_id', 'isbn', 'genre', 'copies_available', 'publish_date']
+        fields = '__all__'
 
-    
-        model = Borrow
-        fields = ['id', 'user', 'book', 'borrowed_date', 'return_date', 'is_returned']
+    def validate_isbn(self, value):
+        if not value.isdigit() or len(value) not in [10, 13]:
+            raise serializers.ValidationError("ISBN must be 10 or 13 digits long.")
+        return value
 
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
@@ -49,4 +52,14 @@ class BorrowTransactionSerializer(serializers.ModelSerializer):
         model = BorrowTransaction
         fields = ['id', 'member', 'member_id', 'book', 'book_id', 'borrow_date', 'return_date', 'status']
 
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'date_joined']
+    
+    def validate_email(self, value):
+        if '@' not in value:
+            raise serializers.ValidationError("Invalid email format.")
+        return value
 

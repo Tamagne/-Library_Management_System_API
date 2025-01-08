@@ -150,3 +150,53 @@ class ExportReportView(APIView):
         p.showPage()
         p.save()
         return response
+
+
+
+from django.db import transaction
+
+class CheckOutBookView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, book_id):
+        try:
+            with transaction.atomic():
+                book = Book.objects.get(id=book_id)
+                if book.available_copies > 0:
+                    Transaction.objects.create(
+                        user=request.user,
+                        book=book,
+                        check_out_date=timezone.now()
+                    )
+                    book.available_copies -= 1
+                    book.save()
+                    return Response({"message": "Book checked out successfully!"}, status=200)
+                else:
+                    return Response({"error": "No copies available!"}, status=400)
+        except Book.DoesNotExist:
+            return Response({"error": "Book not found!"}, status=404)
+
+class ReturnBookView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, book_id):
+        try:
+            with transaction.atomic():
+                book = Book.objects.get(id=book_id)
+                transaction = Transaction.objects.filter(
+                    user=request.user, 
+                    book=book, 
+                    return_date__isnull=True
+                ).first()
+
+                if not transaction:
+                    return Response({"error": "No active borrow record found!"}, status=400)
+
+                transaction.return_date = timezone.now()
+                transaction.save()
+
+                book.available_copies += 1
+                book.save()
+                return Response({"message": "Book returned successfully!"}, status=200)
+        except Book.DoesNotExist:
+            return Response({"error": "Book not found!"}, status=404)
