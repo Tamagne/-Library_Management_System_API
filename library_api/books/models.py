@@ -109,3 +109,10 @@ class User(AbstractUser):
         related_name='custom_user_permissions_set',  # Avoid conflicts
         blank=True
     )
+
+
+class BorrowingHistory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    borrowed_date = models.DateField()
+    returned = models.BooleanField(default=False)

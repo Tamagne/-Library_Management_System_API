@@ -1,0 +1,29 @@
+{% extends 'books/base.html' %}
+{% block title %}Borrowing History{% endblock %}
+{% block content %}
+<h1>My Borrowing History</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Book Title</th>
+            <th>Borrowed Date</th>
+            <th>Returned</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in history %}
+        <tr>
+            <td>{{ record.book.title }}</td>
+            <td>{{ record.borrowed_date }}</td>
+            <td>
+                {% if record.returned %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

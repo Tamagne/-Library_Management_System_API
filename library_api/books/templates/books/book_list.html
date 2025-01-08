@@ -1,0 +1,31 @@
+{% extends 'books/base.html' %}
+{% block title %}Book List{% endblock %}
+{% block content %}
+<h1>Available Books</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Availability</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books %}
+        <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.genre }}</td>
+            <td>
+                {% if book.is_available %}
+                    Available
+                {% else %}
+                    Checked Out
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

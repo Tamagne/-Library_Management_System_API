@@ -220,3 +220,50 @@ class BookViewSet(viewsets.ViewSet):
         book = get_object_or_404(Book, pk=pk)
         serializer = BookSerializer(book)
         return Response(serializer.data)
+
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
+def home(request):
+    return render(request, 'books/home.html')
+
+def about(request):
+    return render(request, 'books/about.html')
+
+def register(request):
+    # Add registration logic here
+    return render(request, 'books/register.html')
+
+@login_required
+def profile(request):
+    return render(request, 'books/profile.html')
+
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
+
+from .models import Book
+
+def book_list(request):
+    books = Book.objects.all()
+    return render(request, 'books/book_list.html', {'books': books})
+
+from django.shortcuts import render
+from .models import BorrowingHistory
+
+def borrowing_history(request):
+    history = BorrowingHistory.objects.filter(user=request.user)
+    return render(request, 'books/borrowing_history.html', {'history': history})
+
+from django.http import JsonResponse
+
+def api_home(request):
+    return JsonResponse({'message': 'Welcome to the API!'})
+
