@@ -1,6 +1,13 @@
 {% extends 'books/base.html' %}
+
+
+
+
 {% block title %}Home{% endblock %}
 {% block content %}
+<a href="{% url 'login' %}">Login</a>
+<a href="{% url 'register' %}">Register</a>
+
 <h1>Welcome to the Library Management System</h1>
 <p>Explore books, manage your account, and more!</p>
 {% endblock %}

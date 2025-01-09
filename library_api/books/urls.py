@@ -7,6 +7,7 @@ from .views import (
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from . import views
+from .views import login_view  # Adjust the import according to your view
 
 # Define the router for API views
 router = DefaultRouter()
@@ -18,13 +19,18 @@ router.register('transactions', BorrowTransactionViewSet, basename='transaction'
 # Define URL patterns
 urlpatterns = [
     # Web-based routes
-    path('', views.home, name='home'),
+    path('home/', views.home, name='home'),
     path('about/', views.about, name='about'),
     path('register/', views.register, name='register'),
     path('profile/', views.profile, name='profile'),
     path('logout/', views.logout_view, name='logout'),
     path('books/', views.book_list, name='book_list'),
     path('borrowing-history/', views.borrowing_history, name='borrowing_history'),
+    path('login/', login_view, name='login'),
+
+    
+
+
 
     # API routes
     path('api/', include(router.urls)),
