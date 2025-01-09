@@ -131,3 +131,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'books.pagination.CustomPagination',
     'PAGE_SIZE': 10,  # Optional global page size
 }
+
+
+# This is Tamagnes deployment
