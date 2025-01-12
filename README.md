@@ -24,7 +24,6 @@ This project is a **Library Management System API** built using Django and Djang
 ### 4. **Advanced Features**
 - Pagination and filtering for API responses
 - Secure authentication using JWT
-- Deployed on PythonAnywhere
 
 ---
 
@@ -74,7 +73,9 @@ This project is a **Library Management System API** built using Django and Djang
 2. **Create and Activate a Virtual Environment**
    ```bash
    python3 -m venv env
-   source env/bin/activate
+   source env/bin/activate for mac
+   env/Scripts/activate for window
+ 
    ```
 
 3. **Install Dependencies**
@@ -110,8 +111,6 @@ This project is a **Library Management System API** built using Django and Djang
 
 ---
 
-## Deployment
-The project is deployed on **PythonAnywhere**. You can access the live version [here](https://yourusername.pythonanywhere.com) (replace `yourusername` with your PythonAnywhere username).
 
 ---
 
@@ -120,12 +119,7 @@ The project is deployed on **PythonAnywhere**. You can access the live version [
 - Implement notifications for overdue books.
 - Add support for multiple libraries.
 
----
 
-## License
-This project is licensed under the MIT License. See the `LICENSE` file for details.
-
----
 
 ## Author
 **Tamagne Gedefaye**
